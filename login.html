@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IronDesk — Log In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: #0d0d0f; color: #f4f3f0;
+    font-family: Inter, system-ui, "Segoe UI", Arial, sans-serif; font-size: 14px;
+    -webkit-font-smoothing: antialiased; display: flex;
+  }
+
+  /* ---------- Left hero panel ---------- */
+  .hero {
+    flex: 1.15; position: relative; overflow: hidden; padding: 48px 56px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    background:
+      radial-gradient(700px 500px at 20% 110%, rgba(255, 90, 52, 0.45), transparent 60%),
+      radial-gradient(500px 400px at 90% -10%, rgba(255, 138, 61, 0.22), transparent 60%),
+      #121214;
+    border-right: 1px solid #27272c;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; opacity: 0.5; pointer-events: none;
+    background-image: linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(circle at 30% 60%, #000, transparent 75%);
+    -webkit-mask-image: radial-gradient(circle at 30% 60%, #000, transparent 75%);
+  }
+  .hero > * { position: relative; z-index: 1; }
+
+
+  .hero > .hero-art { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(13,13,15,0.55) 0%, rgba(13,13,15,0) 35%, rgba(13,13,15,0.7) 100%);
+  }
+  .accent-line { width: 84px; height: 5px; border-radius: 3px; margin-top: 22px; background: linear-gradient(90deg, #ff5a34, #ff8a3d); }
+
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark {
+    width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; color: #1a1a1a;
+    background: linear-gradient(135deg, #ff5a34, #ff8a3d); box-shadow: 0 8px 22px rgba(255, 90, 52, 0.4);
+  }
+  .brand-name { font-family: "Barlow Condensed", Inter, sans-serif; font-size: 32px; font-weight: 700; letter-spacing: 0.5px; }
+  .brand-name span { color: #ff5a34; }
+
+  .hero h1 {
+    font-family: "Barlow Condensed", Inter, sans-serif; font-size: clamp(44px, 6vw, 78px);
+    line-height: 0.98; margin: 0; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .hero h1 em { font-style: normal; color: #ff5a34; }
+
+
+  /* ---------- Right form panel ---------- */
+  .form-side { flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px; }
+  .card { width: 100%; max-width: 370px; animation: rise 0.45s ease; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+  .card h2 { margin: 0 0 6px; font-size: 28px; font-family: "Barlow Condensed", Inter, sans-serif; letter-spacing: 0.3px; }
+  .subtitle { color: #8e8e96; margin: 0 0 28px; }
+
+  label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #8e8e96; margin: 18px 0 7px; }
+
+  .input-wrap { position: relative; }
+  input {
+    width: 100%; background: #1c1c20; border: 1px solid #34343a; color: #f4f3f0;
+    padding: 13px 14px; border-radius: 11px; font-size: 15px; font-family: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  input:focus { outline: none; border-color: #ff5a34; box-shadow: 0 0 0 3px rgba(255, 90, 52, 0.15); }
+  .input-wrap input { padding-right: 62px; }
+  .toggle {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: #8e8e96; font-size: 12px; font-weight: 600; cursor: pointer; padding: 6px 8px; border-radius: 6px;
+  }
+  .toggle:hover { color: #f4f3f0; }
+
+  button.submit-btn {
+    width: 100%; margin-top: 26px; padding: 14px 16px; border: none; border-radius: 11px; cursor: pointer;
+    background: linear-gradient(135deg, #ff5a34, #ff8a3d); color: #1a1a1a; font-weight: 700; font-size: 15px; font-family: inherit;
+    box-shadow: 0 10px 24px rgba(255, 90, 52, 0.3); transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+  button.submit-btn:hover { opacity: 0.93; }
+  button.submit-btn:active { transform: scale(0.98); }
+  button.submit-btn:disabled { opacity: 0.6; cursor: default; }
+
+  .error {
+    background: rgba(248, 113, 113, 0.1); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.35);
+    padding: 11px 13px; border-radius: 10px; margin-top: 18px; display: none;
+  }
+  .error.show { display: block; animation: shake 0.35s ease; }
+  @keyframes shake { 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+
+  .foot { color: #5e5e66; font-size: 12px; text-align: center; margin-top: 26px; }
+
+  @media (max-width: 860px) {
+    body { flex-direction: column; }
+    .hero { flex: none; padding: 28px 24px 32px; border-right: none; border-bottom: 1px solid #27272c; }
+    .hero h1 { font-size: 40px; margin-bottom: 0; }
+    .accent-line { margin-top: 14px; }
+    .hero-text { margin-top: 24px; }
+    .form-side { padding: 28px 22px 40px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <svg class="hero-art" viewBox="0 0 800 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="plate" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ff5a34" stop-opacity="0.30"/>
+        <stop offset="1" stop-color="#ff5a34" stop-opacity="0.05"/>
+      </linearGradient>
+    </defs>
+
+    <!-- big weight plate, half off-screen top right -->
+    <g fill="none" stroke="#ff5a34" stroke-opacity="0.22" stroke-width="2">
+      <circle cx="780" cy="130" r="230"/>
+      <circle cx="780" cy="130" r="195" stroke-opacity="0.14"/>
+      <circle cx="780" cy="130" r="70"/>
+      <circle cx="780" cy="130" r="22" fill="#ff5a34" fill-opacity="0.18"/>
+    </g>
+
+    <!-- barbell -->
+    <g transform="rotate(-10 400 560)" stroke="#ff5a34" stroke-opacity="0.55" stroke-width="2">
+      <rect x="20" y="553" width="760" height="14" rx="7" fill="#ffffff" fill-opacity="0.06"/>
+      <g fill="url(#plate)">
+        <rect x="140" y="410" width="30" height="300" rx="9"/>
+        <rect x="174" y="440" width="24" height="240" rx="8"/>
+        <rect x="202" y="474" width="20" height="172" rx="7"/>
+        <rect x="630" y="410" width="30" height="300" rx="9"/>
+        <rect x="602" y="440" width="24" height="240" rx="8"/>
+        <rect x="578" y="474" width="20" height="172" rx="7"/>
+      </g>
+      <rect x="226" y="544" width="14" height="32" rx="4" fill="#ffffff" fill-opacity="0.10"/>
+      <rect x="560" y="544" width="14" height="32" rx="4" fill="#ffffff" fill-opacity="0.10"/>
+    </g>
+
+    <!-- kettlebell -->
+    <g transform="translate(150 780)" stroke="#ff8a3d" stroke-opacity="0.45" stroke-width="2">
+      <path d="M-42 -28 C-42 -100 42 -100 42 -28" fill="none" stroke-width="16" stroke-linecap="round"/>
+      <path d="M-70 30 C-70 -20 -44 -34 0 -34 C44 -34 70 -20 70 30 C70 62 48 76 0 76 C-48 76 -70 62 -70 30 Z" fill="url(#plate)"/>
+    </g>
+
+    <!-- small dumbbell -->
+    <g transform="translate(110 150) rotate(-25)" stroke="#ff8a3d" stroke-opacity="0.4" stroke-width="2" fill="#ffffff" fill-opacity="0.04">
+      <rect x="-12" y="-5" width="24" height="10" rx="3"/>
+      <rect x="-30" y="-24" width="14" height="48" rx="5"/>
+      <rect x="-44" y="-16" width="10" height="32" rx="4"/>
+      <rect x="16" y="-24" width="14" height="48" rx="5"/>
+      <rect x="34" y="-16" width="10" height="32" rx="4"/>
+    </g>
+  </svg>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5v11"/><path d="M17.5 6.5v11"/><path d="M3 9v6"/><path d="M21 9v6"/><path d="M6.5 12h11"/></svg>
+    </div>
+    <div class="brand-name">Iron<span>Desk</span></div>
+  </div>
+
+  <div class="hero-text">
+    <h1>Train hard<br><em>Manage smart</em></h1>
+    <div class="accent-line"></div>
+  </div>
+</section>
+
+<section class="form-side">
+  <form class="card" id="login-form">
+    <h2>Welcome back</h2>
+    <p class="subtitle">Log in to manage your gym.</p>
+
+    <label for="username">Username</label>
+    <input id="username" autocomplete="username" required autofocus>
+
+    <label for="password">Password</label>
+    <div class="input-wrap">
+      <input id="password" type="password" autocomplete="current-password" required>
+      <button type="button" class="toggle" id="toggle-pw">Show</button>
+    </div>
+
+    <div class="error" id="error-box"></div>
+
+    <button type="submit" class="submit-btn" id="submit-btn">Log In</button>
+
+    <p class="foot">IronDesk · Gym Management</p>
+  </form>
+</section>
+
+<script>
+  var API_URL = (location.protocol === "file:") ? "http://localhost:3000" : "";
+
+  // If a token already exists, skip straight to the app.
+  // (If it has expired, the app will send you back here and clear it.)
+  if (localStorage.getItem("token")) {
+    window.location.replace("gym-management.html");
+  }
+
+  var form = document.getElementById("login-form");
+  var errorBox = document.getElementById("error-box");
+  var submitBtn = document.getElementById("submit-btn");
+  var pw = document.getElementById("password");
+
+  document.getElementById("toggle-pw").addEventListener("click", function () {
+    var showing = pw.type === "text";
+    pw.type = showing ? "password" : "text";
+    this.textContent = showing ? "Show" : "Hide";
+  });
+
+  function showError(message) {
+    errorBox.textContent = message;
+    errorBox.classList.remove("show");
+    void errorBox.offsetWidth; // restart the shake animation
+    errorBox.classList.add("show");
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    errorBox.classList.remove("show");
+
+    var username = document.getElementById("username").value.trim();
+    var password = pw.value;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Logging in...";
+
+    fetch(API_URL + "/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: username, password: password })
+    })
+      .then(function (res) {
+        return res.json().then(function (data) { return { ok: res.ok, data: data }; });
+      })
+      .then(function (result) {
+        if (!result.ok) { showError(result.data.error || "Login failed."); return; }
+        localStorage.setItem("token", result.data.token);
+        window.location.replace("gym-management.html");
+      })
+      .catch(function () {
+        showError("Can't reach the server. Is server.js running?");
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Log In";
+      });
+  });
+</script>
+
+</body>
+</html>
